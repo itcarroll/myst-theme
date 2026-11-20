@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { Tooltip } from './components/index.js';
 import { MyST } from './MyST.js';
 import type { GenericNode } from 'myst-common';
+import { DownloadDocumentIcon, DownloadsMenuIcon } from '@myst-theme/frontmatter';
 
 type TableExts = {
   rowspan?: number;
@@ -58,6 +59,16 @@ type Root = {
   type: 'root';
 };
 
+type InlineIcon = {
+  type: 'inlineIcon';
+  value: string;
+};
+
+const ICONS = [
+  { name: 'downloads', component: DownloadsMenuIcon },
+  { name: 'file', component: DownloadDocumentIcon }  
+] as const;
+
 type BasicNodeRenderers = {
   text: NodeRenderer<spec.Text>;
   span: NodeRenderer<GenericNode>;
@@ -100,6 +111,7 @@ type BasicNodeRenderers = {
   include: NodeRenderer<Include>;
   glossary: NodeRenderer<Glossary>;
   root: NodeRenderer<Root>;
+  inlineIcon: NodeRenderer<InlineIcon>;
 };
 
 const BASIC_RENDERERS: BasicNodeRenderers = {
@@ -119,6 +131,16 @@ const BASIC_RENDERERS: BasicNodeRenderers = {
           </React.Fragment>
         ))}
       </>
+    );
+  },
+  inlineIcon({ node, className }) {
+    const icon = ICONS.find(({ name }) => name === node.value);
+    if (!icon) return null;
+    const InlineIcon = icon.component;
+    return (
+      <InlineIcon
+        className={classNames(node.class, className, "inline-block")}
+      />
     );
   },
   span({ node, className }) {

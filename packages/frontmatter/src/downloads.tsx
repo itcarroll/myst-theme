@@ -62,7 +62,33 @@ export async function triggerBlobDownload(blob: Blob, filename: string) {
   return true;
 }
 
-const ICON_CLASS = 'myst-fm-download-icon self-center flex-none inline-block mr-3';
+const MENU_ICON_CLASS = 'myst-fm-downloads-icon stroke-myst-text-tertiary';
+
+const ICON_CLASS = 'myst-fm-download-icon self-center flex-none';
+
+
+export function DownloadsMenuIcon({ className }: { className?: string }) {
+  return (
+    <ArrowDownTrayIcon
+      width="1.25rem"
+      height="1.25rem"
+      className={classNames(MENU_ICON_CLASS, className)}
+      aria-hidden="true"
+      title="Download"
+    />
+  );
+}
+
+export function DownloadDocumentIcon({ className }: { className?: string }) {
+  return (
+    <DocumentArrowDownIcon
+      width="1.25rem"
+      height="1.25rem"
+      className={classNames(ICON_CLASS, className)}
+      aria-hidden="true"
+    />
+  );
+}
 
 export function Download({
   url,
@@ -121,11 +147,8 @@ export function Download({
       <span className="sr-only">
         Download{format ? ` as ${format}` : ''} {title ?? ''}
       </span>
-      <DocumentArrowDownIcon
-        width="1.25rem"
-        height="1.25rem"
-        className={ICON_CLASS}
-        aria-hidden="true"
+      <DownloadDocumentIcon
+        className="mr-3 inline-block"
       />
       <span className="myst-fm-download-text w-max max-w-[200px] self-center">
         {title ?? filename}
@@ -140,12 +163,8 @@ export function DownloadsDropdown({ exports }: HasExports) {
     <Menu as="div" className="myst-fm-downloads-dropdown relative flex inline-block mx-1 grow-0">
       <Menu.Button className="myst-fm-downloads-button relative ml-2 -mr-1">
         <span className="sr-only">Downloads</span>
-        <ArrowDownTrayIcon
-          width="1.25rem"
-          height="1.25rem"
-          className="myst-fm-downloads-icon stroke-myst-text-tertiary hover:stroke-myst-text"
-          aria-hidden="true"
-          title="Download"
+        <DownloadsMenuIcon
+          className="hover:stroke-myst-text"
         />
       </Menu.Button>
       <Menu.Items className="myst-fm-downloads-menu absolute z-10 overflow-hidden bg-myst-bg rounded-sm shadow-lg -right-1 ring-1 ring-black ring-opacity-5 focus:outline-none">
